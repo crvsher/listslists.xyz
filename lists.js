@@ -135,10 +135,14 @@
       const spacing = style.spacing.toFixed(3) + "em";
       const down = forceKid ? forceKid === "down" : rest.length <= 26;
       if (down) {                                            // turn the corner and go down
-        const down = document.createElement("span");
-        down.className = "down";
-        down.textContent = rest.replace(/ /g, " ");
-        sign.appendChild(down);
+        const col = document.createElement("span");
+        col.className = "down";
+        for (const ch of rest) {                             // each letter tilted as it heads down
+          const l = document.createElement("span");
+          l.textContent = ch === " " ? "\u00a0" : ch;
+          col.appendChild(l);
+        }
+        sign.appendChild(col);
       } else {                                               // cram the rest in smaller
         let scale = Math.min(.7, (W * .95) / width(li, rest));
         const wrap = scale < .3;                             // too much for one line: cram several
