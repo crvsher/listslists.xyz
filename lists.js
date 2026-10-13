@@ -1,8 +1,8 @@
 // lists lists: every visit to a list sets it in a randomly chosen face and style, sized to the
 // window, the list's length and its longest line. Some lines too long for the screen run to the
 // edge and turn the corner (letters tilted 45° on the way down), or cram the rest in smaller, like
-// a hand-lettered sign. One visit in five does that, to every line too long for the window
-// (recomputed on resize); the other visits wrap normally.
+// a hand-lettered sign. One visit in fifty does that to one line too long for the window
+// (recomputed on resize); every other visit wraps normally.
 (() => {
   "use strict";
 
@@ -38,8 +38,8 @@
   const params = new URLSearchParams(location.search);
   const font = params.get("font") || pick(FONTS);
   const forceKid = params.get("kid");                        // "down" or "cram", for testing
-  // One visit in five gets kid-sign lines; the rest wrap normally (user, 2026-10-13).
-  const kidVisit = forceKid ? true : chance(.2);
+  // One visit in fifty gets a kid-sign line, never more than one per list (user, 2026-10-13).
+  const kidVisit = forceKid ? true : chance(.02);
   const [paper, ink] = pick(PAPERS);
   const style = {
     align: chance(.6) ? "left" : chance(.6) ? "center" : "right",
@@ -110,13 +110,18 @@
 
   function kidSigns(main, size) {
     if (!kidVisit) return;
-    main.querySelectorAll("li").forEach(li => {
+    // Never more than one per list: pick one of the lines too long for the window.
+    const long = [...main.querySelectorAll("li")].filter(li => {
+      const first = li.firstChild;
+      if (!first || first.nodeType !== 3 || li.querySelector("a")) return false;  // plain text only
+      const text = first.textContent.trim();
+      return text && width(li, text) > li.clientWidth * .98;
+    });
+    if (!long.length) return;
+    [pick(long)].forEach(li => {
       const W = li.clientWidth;
       const first = li.firstChild;
-      if (!first || first.nodeType !== 3) return;           // only plain-text items
-      if (li.querySelector("a")) return;
       const text = first.textContent.trim();
-      if (!text || width(li, text) <= W * .98) return;       // fits on one line
       const room = W - size * 1.1;                           // keep a column for the turn
       let lo = 1, hi = text.length;
       while (lo < hi) {                                      // longest prefix that fits

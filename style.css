@@ -71,7 +71,7 @@ body { margin: 0; background: var(--bg); color: var(--ink); }
 .list ul, .list ol { margin: 0; padding: 0 0 0 1.4em; }
 .list li { margin: 0 0 .25em; }
 .list a { color: inherit; }
-.list .sub { display: block; font-size: .42em; line-height: 1.3; opacity: .65; margin: .1em 0 .3em; }
+.list .sub { display: block; font-size: .55em; line-height: 1.3; opacity: .65; margin: .1em 0 .3em; }
 
 /* Kid-sign lines: run to the edge, then turn the corner (or cram). */
 .kid { display: inline; }
