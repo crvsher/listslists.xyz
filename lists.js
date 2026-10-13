@@ -1,7 +1,8 @@
 // lists lists: every visit to a list sets it in a randomly chosen face and style, sized to the
 // window, the list's length and its longest line. Some lines too long for the screen run to the
-// edge and turn the corner, or cram the rest in smaller, like a hand-lettered sign. Which lines
-// do that depends only on the window: every line too long for it does, recomputed on resize.
+// edge and turn the corner (letters tilted 45° on the way down), or cram the rest in smaller, like
+// a hand-lettered sign. One visit in five does that, to every line too long for the window
+// (recomputed on resize); the other visits wrap normally.
 (() => {
   "use strict";
 
@@ -37,6 +38,8 @@
   const params = new URLSearchParams(location.search);
   const font = params.get("font") || pick(FONTS);
   const forceKid = params.get("kid");                        // "down" or "cram", for testing
+  // One visit in five gets kid-sign lines; the rest wrap normally (user, 2026-10-13).
+  const kidVisit = forceKid ? true : chance(.2);
   const [paper, ink] = pick(PAPERS);
   const style = {
     align: chance(.6) ? "left" : chance(.6) ? "center" : "right",
@@ -106,6 +109,7 @@
   }
 
   function kidSigns(main, size) {
+    if (!kidVisit) return;
     main.querySelectorAll("li").forEach(li => {
       const W = li.clientWidth;
       const first = li.firstChild;

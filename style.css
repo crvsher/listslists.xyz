@@ -77,4 +77,5 @@ body { margin: 0; background: var(--bg); color: var(--ink); }
 .kid { display: inline-flex; align-items: flex-start; max-width: 100%; }
 .run { white-space: nowrap; }
 .kid .down { writing-mode: vertical-rl; text-orientation: upright; letter-spacing: -.12em; line-height: 1; }
+.kid .down span { display: inline-block; transform: rotate(45deg); }
 .kid .cram { display: block; text-align: right; line-height: 1; }
