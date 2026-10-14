@@ -58,12 +58,13 @@
   const params = new URLSearchParams(location.search);
   let font, paper, ink, style;
 
-  // Pick this visit's look; the rainbow button picks again.
+  // Pick this visit's look; the rainbow button picks again, except the bullets.
   function roll(first) {
     font = (first && params.get("font")) || pick(FONTS.filter(f => f !== font));
     [paper, ink] = pick(PAPERS.filter(p => p[0] !== paper));
     style = {
-      marker: pick(MARKERS),
+      // The rainbow keeps the bullets; only the * button changes them (user, 2026-10-14).
+      marker: first || !style ? pick(MARKERS) : style.marker,
       italic: chance(.15),
       spacing: rand(-.03, .05),     // casing always stays as written in the list
       leading: rand(.95, 1.35),
