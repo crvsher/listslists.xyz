@@ -20,6 +20,14 @@
     "Victor Mono", "DM Mono", "Overpass Mono", "Cousine", "Martian Mono", "Azeret Mono",
     // odd ones
     "Major Mono Display", "Unica One",
+    // type-nerd favourites (added 2026-10-14)
+    "Young Serif", "Gloock", "Libre Bodoni", "Ibarra Real Nova", "Besley", "Petrona", "Brygada 1918", "Imbue",
+    "Castoro", "Rosarivo", "Zilla Slab", "Piazzolla", "Gelasio",
+    "Bricolage Grotesque", "Hanken Grotesk", "Schibsted Grotesk", "Instrument Sans", "Recursive", "Chivo",
+    "Spline Sans", "Geist", "Funnel Display", "Familjen Grotesk", "Epilogue", "Commissioner", "Big Shoulders Display",
+    "Onest", "Darker Grotesque", "Radio Canada Big",
+    "Chivo Mono", "Spline Sans Mono", "Geist Mono", "Atkinson Hyperlegible Mono", "Sometype Mono", "Red Hat Mono",
+    "Fragment Mono", "Tiny5",
   ];
   const PAPERS = [
     ["#fbf8f1", "#1b1b1b"], ["#111111", "#f2efe6"], ["#f4e9d8", "#3a2a1a"], ["#ffffff", "#0033cc"],
@@ -34,6 +42,15 @@
     ["#ffffff", "#7b2cbf"], ["#1e1e1e", "#ff8c42"], ["#f2e8cf", "#386641"], ["#ffc6ff", "#3a0ca3"],
     ["#06d6a0", "#073b4c"], ["#ffbe0b", "#3a0ca3"], ["#22223b", "#f2e9e4"], ["#ffd6e0", "#0b3954"],
     ["#00a6fb", "#001b2e"],
+    // designer favourites (added 2026-10-14): Klein blue, Swiss and Vignelli red, Bauhaus, Penguin, Braun, Riso pink,
+    // Mondrian, editor themes (Gruvbox, Dracula, Nord, Tokyo Night, Catppuccin, Rosé Pine, Everforest, Monokai), Pantone years
+    ["#002fa7", "#f4f1ea"], ["#e30613", "#ffffff"], ["#f2c12e", "#111111"], ["#ef6c1a", "#111111"],
+    ["#2b2b2b", "#ff7a1a"], ["#ff48b0", "#1b1b1b"], ["#ffffff", "#1d3ec9"], ["#ffffff", "#d52b1e"],
+    ["#282828", "#ebdbb2"], ["#fbf1c7", "#3c3836"], ["#282a36", "#f8f8f2"], ["#2e3440", "#d8dee9"],
+    ["#1a1b26", "#c0caf5"], ["#1e1e2e", "#cdd6f4"], ["#eff1f5", "#4c4f69"], ["#191724", "#e0def4"],
+    ["#faf4ed", "#575279"], ["#2d353b", "#d3c6aa"], ["#272822", "#f8f8f2"], ["#0f4c81", "#f5f5f0"],
+    ["#bb2649", "#fff4f0"], ["#ffbe98", "#3b1f14"], ["#81d8d0", "#0d2b2a"], ["#ff4f00", "#111111"],
+    ["#ede8e0", "#2f2a24"], ["#a47864", "#1c120d"], ["#e4447b", "#1a0a10"],
   ];
   // Bullets: one kind per pick, used for every item on the page. The first look of a visit may
   // also have none; the * button always picks a real one.
