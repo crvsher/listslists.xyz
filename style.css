@@ -18,13 +18,6 @@ body { margin: 0; background: #fbf8f1; color: #1b1b1b; }
 .list a { color: inherit; text-decoration-thickness: .04em; text-underline-offset: .12em; }
 .list .sub { display: block; font-size: .55em; line-height: 1.3; opacity: .65; margin: .1em 0 .3em; }
 
-/* Kid-sign lines: run to the edge, then turn the corner (or cram). */
-.kid { display: inline; }
-.run { white-space: nowrap; }
-.kid .down { display: inline-block; vertical-align: top; white-space: nowrap; writing-mode: vertical-rl; text-orientation: upright; letter-spacing: -.12em; line-height: 1; }
-.kid .down span { display: inline-block; transform: rotate(45deg); }
-.kid .cram { display: block; text-align: right; line-height: 1; }
-
 /* Top-of-page buttons: rainbow restyles everything, * changes only the bullets. */
 .tools { display: flex; gap: 10px; margin: 16px 16px 0; }
 .tools button {
