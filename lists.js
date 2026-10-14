@@ -59,7 +59,6 @@
 
   const params = new URLSearchParams(location.search);
   const forceKid = params.get("kid");                        // "down" or "cram", for testing
-  const isIndex = document.body.classList.contains("index");
   let font, paper, ink, style, kidVisit;
 
   // Pick this visit's look; the rainbow button picks again.
@@ -69,8 +68,6 @@
     // One visit in fifty gets a kid-sign line, never more than one per list (user, 2026-10-13).
     kidVisit = forceKid ? true : chance(.02);
     style = {
-      // The index is always left-aligned (user); lists can be left, centred or right.
-      align: isIndex ? "left" : chance(.6) ? "left" : chance(.6) ? "center" : "right",
       marker: pick(MARKERS),
       italic: chance(.15),
       spacing: rand(-.03, .05),     // casing always stays as written in the list
@@ -97,14 +94,14 @@
     b.background = paper;
     b.color = ink;
     b.fontFamily = `"${font}", Georgia, serif`;
-    main.style.textAlign = style.align;
+    main.style.textAlign = "left";       // every page, always (user, 2026-10-13)
     main.style.letterSpacing = style.spacing.toFixed(3) + "em";
     main.style.lineHeight = style.leading.toFixed(2);
     main.style.fontStyle = style.italic ? "italic" : "normal";
     main.querySelectorAll("ul, ol").forEach(l => {
       l.style.listStyleType = style.marker;
-      l.style.listStylePosition = style.align === "left" ? "outside" : "inside";
-      l.style.paddingLeft = style.align === "left" ? "2.2em" : "0";
+      l.style.listStylePosition = "outside";
+      l.style.paddingLeft = "2.2em";
     });
     const h = main.querySelector("h1");
     if (h) h.style.fontSize = style.heading.toFixed(2) + "em";
