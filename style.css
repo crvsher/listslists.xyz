@@ -25,22 +25,32 @@ body { margin: 0; background: #fbf8f1; color: #1b1b1b; }
 .kid .down span { display: inline-block; transform: rotate(45deg); }
 .kid .cram { display: block; text-align: right; line-height: 1; }
 
-/* The rainbow restyle button (every page). */
-.restyle {
-  display: block;
+/* Top-of-page buttons: rainbow restyles everything, * changes only the bullets. */
+.tools { display: flex; gap: 10px; margin: 16px 16px 0; }
+.tools button {
   width: 44px;
   height: 44px;
-  margin: 16px 16px 0;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: conic-gradient(#ff3b30, #ff9500, #ffcc00, #34c759, #00c7be, #007aff, #af52de, #ff2d55, #ff3b30);
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, .6), 0 1px 4px rgba(0, 0, 0, .25);
   cursor: pointer;
   transition: transform .4s ease;
 }
+.tools button:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+.tools button:disabled { opacity: .6; cursor: progress; }
+.restyle {
+  background: conic-gradient(#ff3b30, #ff9500, #ffcc00, #34c759, #00c7be, #007aff, #af52de, #ff2d55, #ff3b30);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, .6), 0 1px 4px rgba(0, 0, 0, .25);
+}
 .restyle:hover { transform: rotate(90deg); }
 .restyle:active { transform: rotate(180deg) scale(.92); }
-.restyle:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
-.restyle:disabled { opacity: .6; cursor: progress; }
-.list:not(.styled) .restyle { visibility: hidden; }
+.bullets {
+  background: transparent;
+  color: inherit;
+  box-shadow: inset 0 0 0 2px currentColor;
+  font: 700 30px/44px ui-monospace, SFMono-Regular, Menlo, monospace;
+  padding-top: 8px;
+}
+.bullets:hover { transform: rotate(72deg); }
+.bullets:active { transform: rotate(144deg) scale(.92); }
+.list:not(.styled) .tools { visibility: hidden; }

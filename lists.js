@@ -37,8 +37,21 @@
     ["#06d6a0", "#073b4c"], ["#ffbe0b", "#3a0ca3"], ["#22223b", "#f2e9e4"], ["#ffd6e0", "#0b3954"],
     ["#00a6fb", "#001b2e"],
   ];
-  const MARKERS = ["disc", "decimal", "none", "lower-roman", "circle", "square", "lower-alpha",
-                   '"— "', '"* "', '"→ "', "decimal-leading-zero", "none"];
+  // Bullets: one kind per pick, used for every item on the page. The first look of a visit may
+  // also have none; the * button always picks a real one.
+  const BULLETS = [
+    "decimal", "decimal-leading-zero", "lower-roman", "upper-roman", "lower-alpha", "upper-alpha",
+    "lower-greek", "disc", "circle", "square", "disclosure-closed", '"• "', '"◦ "', '"▪ "', '"▫ "',
+    '"▸ "', '"▹ "', '"→ "', '"⇢ "', '"— "', '"– "', '"☞ "', '"✓ "', '"✗ "', '"★ "', '"☆ "', '"♥ "',
+    '"♦ "', '"♣ "', '"♠ "', '"§ "', '"¶ "', '"※ "', '"⁂ "', '"✱ "', '"✳ "', '"◆ "', '"◇ "', '"○ "',
+    '"● "', '"■ "', '"□ "', '"☐ "', '"☑ "', '"➤ "', '"➔ "', '"❖ "', '"✦ "', '"✧ "', '"⊙ "', '"⊕ "',
+    '"∴ "', '"∞ "', '"♪ "', '"☀ "', '"☂ "', '"☃ "', '"✂ "', '"✎ "', '"✿ "', '"❀ "', '"> "',
+    '">> "', '"// "', '"# "', '"+ "', '"~ "', '":: "', '"- "', '"* "', '"=> "', '"| "', '"x "',
+    '"🖤 "', '"👉 "', '"✨ "', '"🔥 "', '"🐾 "', '"⭐ "', '"🍕 "', '"🌀 "', '"📌 "', '"🔸 "', '"🟢 "', '"❌ "',
+    '"✅ "', '"💀 "', '"🫵 "', '"🦆 "', '"🌶️ "', '"🍋 "', '"🪐 "', '"🎯 "', '"🧷 "', '"🪱 "', '"🐌 "',
+    '"🥚 "',
+  ];
+  const MARKERS = BULLETS.concat(["none", "none"]);
 
   const pick = a => a[Math.floor(Math.random() * a.length)];
   const chance = p => Math.random() < p;
@@ -91,7 +104,7 @@
     main.querySelectorAll("ul, ol").forEach(l => {
       l.style.listStyleType = style.marker;
       l.style.listStylePosition = style.align === "left" ? "outside" : "inside";
-      if (style.align !== "left") l.style.paddingLeft = "0";
+      l.style.paddingLeft = style.align === "left" ? "2.2em" : "0";
     });
     const h = main.querySelector("h1");
     if (h) h.style.fontSize = style.heading.toFixed(2) + "em";
@@ -195,20 +208,34 @@
   }
 
   // A rainbow button at the top of every page that restyles it in place.
-  function restyleButton(main, render) {
-    const b = document.createElement("button");
-    b.className = "restyle";
-    b.type = "button";
-    b.setAttribute("aria-label", "Restyle");
-    b.title = "Restyle";
-    b.addEventListener("click", async () => {
-      b.disabled = true;
+  // Two buttons at the top of every page: the rainbow restyles everything, the * only the bullets.
+  function toolbar(main, render) {
+    const bar = document.createElement("div");
+    bar.className = "tools";
+    const button = (cls, label, text, onClick) => {
+      const b = document.createElement("button");
+      b.className = cls;
+      b.type = "button";
+      b.setAttribute("aria-label", label);
+      b.title = label;
+      b.textContent = text;
+      b.addEventListener("click", async () => {
+        b.disabled = true;
+        await onClick();
+        b.disabled = false;
+      });
+      bar.appendChild(b);
+    };
+    button("restyle", "Restyle", "", async () => {
       roll(false);
       await loadFont();
       render();
-      b.disabled = false;
     });
-    document.body.insertBefore(b, main);
+    button("bullets", "Change bullets", "*", () => {
+      style.marker = pick(BULLETS.filter(m => m !== style.marker));
+      render();
+    });
+    document.body.insertBefore(bar, main);
   }
 
   async function run() {
@@ -223,7 +250,7 @@
       kidSigns(main, size);
       credit();
     };
-    restyleButton(main, render);
+    toolbar(main, render);
     render();
     document.body.classList.add("styled");
     let t;
