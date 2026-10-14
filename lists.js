@@ -27,6 +27,15 @@
     ["#fbf8f1", "#1b1b1b"], ["#111111", "#f2efe6"], ["#f4e9d8", "#3a2a1a"], ["#ffffff", "#0033cc"],
     ["#ffe94d", "#111111"], ["#e9f1ea", "#16351f"], ["#1d1f3a", "#f7d488"], ["#f7f2ff", "#3b1d6e"],
     ["#fff5f5", "#b3001b"], ["#eeeeee", "#222222"], ["#0b3d2e", "#e8f5e9"], ["#fdf0e6", "#c2410c"],
+    ["#fff8e7", "#7a1f00"], ["#0f1e3d", "#ffd6a5"], ["#f0fff4", "#05603a"], ["#2b0a3d", "#ffb3f6"],
+    ["#ffefd5", "#5b2c06"], ["#002b36", "#93e1d8"], ["#fdf6e3", "#073642"], ["#ff6b6b", "#1a0000"],
+    ["#ffd1dc", "#6b0f2b"], ["#e0f7fa", "#004d57"], ["#3d0000", "#ffcfa3"], ["#f5f5dc", "#3b3b00"],
+    ["#000000", "#39ff14"], ["#14213d", "#fca311"], ["#ffffff", "#008000"], ["#ffe4e1", "#8b0000"],
+    ["#283618", "#fefae0"], ["#fefae0", "#bc4749"], ["#cdeac0", "#2d3a1f"], ["#03045e", "#caf0f8"],
+    ["#f8edeb", "#6d597a"], ["#2d00f7", "#ffffff"], ["#ff9f1c", "#1d1d1d"], ["#a8dadc", "#1d3557"],
+    ["#ffffff", "#7b2cbf"], ["#1e1e1e", "#ff8c42"], ["#f2e8cf", "#386641"], ["#ffc6ff", "#3a0ca3"],
+    ["#06d6a0", "#073b4c"], ["#ffbe0b", "#3a0ca3"], ["#22223b", "#f2e9e4"], ["#ffd6e0", "#0b3954"],
+    ["#00a6fb", "#001b2e"],
   ];
   const MARKERS = ["disc", "decimal", "none", "lower-roman", "circle", "square", "lower-alpha",
                    '"— "', '"* "', '"→ "', "decimal-leading-zero", "none"];
@@ -36,20 +45,27 @@
   const rand = (lo, hi) => lo + Math.random() * (hi - lo);
 
   const params = new URLSearchParams(location.search);
-  const font = params.get("font") || pick(FONTS);
   const forceKid = params.get("kid");                        // "down" or "cram", for testing
-  // One visit in fifty gets a kid-sign line, never more than one per list (user, 2026-10-13).
-  const kidVisit = forceKid ? true : chance(.02);
-  const [paper, ink] = pick(PAPERS);
-  const style = {
-    align: chance(.6) ? "left" : chance(.6) ? "center" : "right",
-    marker: pick(MARKERS),
-    italic: chance(.15),
-    spacing: 0,
-    leading: rand(.95, 1.35),
-    heading: rand(1, 1.7),
-  };
-  style.spacing = rand(-.03, .05);   // casing always stays as written in the list
+  const isIndex = document.body.classList.contains("index");
+  let font, paper, ink, style, kidVisit;
+
+  // Pick this visit's look; the rainbow button on the index picks again.
+  function roll(first) {
+    font = (first && params.get("font")) || pick(FONTS.filter(f => f !== font));
+    [paper, ink] = pick(PAPERS.filter(p => p[0] !== paper));
+    // One visit in fifty gets a kid-sign line, never more than one per list (user, 2026-10-13).
+    kidVisit = forceKid ? true : chance(.02);
+    style = {
+      // The index is always left-aligned (user); lists can be left, centred or right.
+      align: isIndex ? "left" : chance(.6) ? "left" : chance(.6) ? "center" : "right",
+      marker: pick(MARKERS),
+      italic: chance(.15),
+      spacing: rand(-.03, .05),     // casing always stays as written in the list
+      leading: rand(.95, 1.35),
+      heading: rand(1, 1.7),
+    };
+  }
+  roll(true);
 
   function loadFont() {
     const link = document.createElement("link");
@@ -168,10 +184,31 @@
   function credit() {
     const nav = document.querySelector("nav");
     if (!nav) return;
-    const s = document.createElement("span");
-    s.style.cssText = "float:right;opacity:.6";
+    let s = nav.querySelector(".font-name");
+    if (!s) {
+      s = document.createElement("span");
+      s.className = "font-name";
+      s.style.cssText = "float:right;opacity:.6";
+      nav.appendChild(s);
+    }
     s.textContent = font;
-    nav.appendChild(s);
+  }
+
+  // A rainbow button at the top of the index that restyles the page in place.
+  function restyleButton(main, render) {
+    const b = document.createElement("button");
+    b.className = "restyle";
+    b.type = "button";
+    b.setAttribute("aria-label", "Restyle");
+    b.title = "Restyle";
+    b.addEventListener("click", async () => {
+      b.disabled = true;
+      roll(false);
+      await loadFont();
+      render();
+      b.disabled = false;
+    });
+    document.body.insertBefore(b, main);
   }
 
   async function run() {
@@ -184,9 +221,10 @@
       applyStyle(main);
       const size = fit(main);
       kidSigns(main, size);
+      credit();
     };
+    if (isIndex) restyleButton(main, render);
     render();
-    credit();
     document.body.classList.add("styled");
     let t;
     let lastW = innerWidth;
