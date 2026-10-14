@@ -49,7 +49,7 @@
   const isIndex = document.body.classList.contains("index");
   let font, paper, ink, style, kidVisit;
 
-  // Pick this visit's look; the rainbow button on the index picks again.
+  // Pick this visit's look; the rainbow button picks again.
   function roll(first) {
     font = (first && params.get("font")) || pick(FONTS.filter(f => f !== font));
     [paper, ink] = pick(PAPERS.filter(p => p[0] !== paper));
@@ -194,7 +194,7 @@
     s.textContent = font;
   }
 
-  // A rainbow button at the top of the index that restyles the page in place.
+  // A rainbow button at the top of every page that restyles it in place.
   function restyleButton(main, render) {
     const b = document.createElement("button");
     b.className = "restyle";
@@ -223,7 +223,7 @@
       kidSigns(main, size);
       credit();
     };
-    if (isIndex) restyleButton(main, render);
+    restyleButton(main, render);
     render();
     document.body.classList.add("styled");
     let t;

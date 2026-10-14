@@ -25,7 +25,7 @@ body { margin: 0; background: #fbf8f1; color: #1b1b1b; }
 .kid .down span { display: inline-block; transform: rotate(45deg); }
 .kid .cram { display: block; text-align: right; line-height: 1; }
 
-/* The index's rainbow restyle button. */
+/* The rainbow restyle button (every page). */
 .restyle {
   display: block;
   width: 44px;
