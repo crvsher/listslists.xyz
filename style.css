@@ -47,3 +47,8 @@ body { margin: 0; background: #fbf8f1; color: #1b1b1b; }
 .bullets:hover { transform: rotate(72deg); }
 .bullets:active { transform: rotate(144deg) scale(.92); }
 .list:not(.styled) .tools { visibility: hidden; }
+
+/* back to the landing page, address in full (user, 2026-10-15) */
+footer.landing { font: 12px/1.5 var(--mono); padding: 0 16px 24px; }
+footer.landing a { color: inherit; opacity: .6; text-decoration: none; overflow-wrap: anywhere; }
+footer.landing a:hover { opacity: 1; text-decoration: underline; }
