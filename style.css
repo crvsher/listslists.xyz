@@ -52,3 +52,12 @@ body { margin: 0; background: #fbf8f1; color: #1b1b1b; }
 footer.landing { font: 12px/1.5 var(--mono); padding: 0 16px 24px; }
 footer.landing a { color: inherit; opacity: .6; text-decoration: none; overflow-wrap: anywhere; }
 footer.landing a:hover { opacity: 1; text-decoration: underline; }
+
+/* the three addresses: stacked (the site, the mirror, the pair) until there's room for one line across the foot,
+   then the site on the left, the pair in the middle, the mirror on the right (user, 2026-10-19) */
+@media (min-width: 920px) {
+  .addrs { display: flex; justify-content: space-between; gap: 0 24px; }
+  .addrs br { display: none; }
+  .addrs .to-pair { order: 2; }
+  .addrs .to-mirror { order: 3; }
+}
